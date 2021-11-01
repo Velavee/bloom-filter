@@ -19,13 +19,15 @@ def process_input(input_list, bloom_filter):
 
 
 def main():
-    dict = open('dictionary.txt', 'r')
-
-    bloom_filter = Bloom_Filter_Dict(dict)
+    print('Loading passwords into bloom filter...')
+    # Open password file and store hashes for each password in a dictionary
+    bad_password_file = open('dictionary.txt', 'r')
+    bloom_filter = Bloom_Filter_Dict(bad_password_file)
     bloom_filter.create_dict()
 
-    input = open('sample_input.txt', 'r')
-    process_input(input, bloom_filter)
+    user_input = input("Enter the name of your input file: ")
+    input_file = open(user_input, 'r')
+    process_input(input_file, bloom_filter)
 
 
 if __name__ == '__main__':
