@@ -2,10 +2,7 @@ from hashing import *
 from dict_actions import *
 
 def process_input(input_list, bloom_filter):
-    input_num = int(input_list.readline())
-
-    for x in range(input_num):
-        password = input_list.readline()
+    for password in input_list:
         hashes = Word_Hashes(password)
         sha1_hash = hashes.create_sha1_hash()
         md5_hash = hashes.create_md5_hash()
@@ -25,6 +22,7 @@ def main():
     bloom_filter = Bloom_Filter_Dict(bad_password_file)
     bloom_filter.create_dict()
 
+    # Open input file and check if the passwords are in the list of bad passwords
     user_input = input("Enter the name of your input file: ")
     input_file = open(user_input, 'r')
     process_input(input_file, bloom_filter)
