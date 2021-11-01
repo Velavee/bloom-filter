@@ -1,22 +1,4 @@
-import hashlib
-
-def create_sha1_hash(word):
-    bytes_word = bytes(word, 'utf-8')
-    hash_setup = hashlib.sha1()
-    hash_setup.update(bytes_word)
-    return hash_setup
-
-def create_md5_hash(word):
-    bytes_word = bytes(word, 'utf-8')
-    hash_setup = hashlib.md5()
-    hash_setup.update(bytes_word)
-    return hash_setup
-
-def create_blake3_hash(word):
-    bytes_word = bytes(word, 'utf-8')
-    hash_setup = hashlib.blake2b()
-    hash_setup.update(bytes_word)
-    return hash_setup
+from hashing import *
 
 def add_to_map(a_map, sha1_hash, md5_hash, blake2b_hash):
     a_map[sha1_hash] = 1
@@ -28,18 +10,45 @@ def create_map(dictionary):
     password_dict = {}
 
     for line in dictionary:
-        sha1_hash = create_sha1_hash(line)
-        md5_hash = create_md5_hash(line)
-        blake2b_hash = create_blake3_hash(line)
+        line_hashes = Word_Hashes(line)
+        sha1_hash = line_hashes.create_sha1_hash()
+        md5_hash = line_hashes.create_md5_hash()
+        blake2b_hash = line_hashes.create_blake3_hash()
 
         add_to_map(password_dict, sha1_hash, md5_hash, blake2b_hash)
 
     return password_dict
 
+def check_map(hash, password_map):
+    if password_map.get(hash) == 1:
+        return True
+
+    return False
+
+def process_input(input_list, password_hashes):
+    input_num = int(input_list.readline())
+
+    for x in range(input_num):
+        password = input_list.readline()
+        hashes = Word_Hashes(password)
+        sha1_hash = hashes.create_sha1_hash()
+        md5_hash = hashes.create_md5_hash()
+        blake2b_hash = hashes.create_blake3_hash()
+
+        if check_map(sha1_hash, password_hashes) and check_map(md5_hash, password_hashes) and check_map(blake2b_hash, password_hashes):
+            print('maybe')
+            continue
+
+        print('no')
+
 
 def main():
     dict = open('dictionary.txt', 'r')
     password_dict = create_map(dict)
+
+    input = open('sample_input.txt', 'r')
+    process_input(input, password_dict)
+
 
 if __name__ == '__main__':
     main()
