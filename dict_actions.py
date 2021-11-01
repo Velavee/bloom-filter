@@ -1,5 +1,6 @@
 from hashing import *
 
+# Stores hashes in map and allows capability to check if a hash is in the map
 class Bloom_Filter_Dict:
     def __init__(self, common_passwords):
         self.password_dict = {}
@@ -16,6 +17,7 @@ class Bloom_Filter_Dict:
 
         return
 
+    # Add three different kinds of hashes to map
     def add_to_dict(self, sha1_hash, md5_hash, blake2b_hash):
         self.password_dict[sha1_hash] = 1
         self.password_dict[md5_hash] = 1

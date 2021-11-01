@@ -1,5 +1,6 @@
 import hashlib
 
+# Creates three different kinds of hashes for a value
 class Word_Hashes:
     def __init__(self, word):
         self.word = word

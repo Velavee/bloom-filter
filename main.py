@@ -5,8 +5,10 @@
 
 from hashing import *
 from dict_actions import *
+import calendar
+import time
 
-def process_input(input_list, bloom_filter):
+def process_input(input_list, output_file, bloom_filter):
     for password in input_list:
         hashes = Word_Hashes(password)
         sha1_hash = hashes.create_sha1_hash()
@@ -15,9 +17,16 @@ def process_input(input_list, bloom_filter):
 
         if bloom_filter.check_dict(sha1_hash) and bloom_filter.check_dict(md5_hash) and bloom_filter.check_dict(blake2b_hash):
             print('maybe')
+            output_file.write('maybe\n')
             continue
 
         print('no')
+        output_file.write('no\n')
+
+def create_output_filename():
+    gmt = time.gmtime()
+    timestamp = calendar.timegm(gmt)
+    return f'output_{timestamp}.txt'
 
 
 def main():
@@ -30,8 +39,17 @@ def main():
     # Open input file and check if the passwords are in the list of bad passwords
     user_input = input("Enter the name of your input file: ")
     input_file = open(user_input, 'r')
-    process_input(input_file, bloom_filter)
 
+    output_filename = create_output_filename()
+    output_file = open(output_filename, 'x')
+
+    print('\nResults:\n')
+    process_input(input_file, output_file, bloom_filter)
+
+    print(f'\nYour results have been written to {output_filename}\n')
+    
+    input_file.close()
+    output_file.close()
 
 if __name__ == '__main__':
     main()
