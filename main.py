@@ -1,13 +1,7 @@
 from hashing import *
 from dict_actions import *
 
-def check_map(hash, password_map):
-    if password_map.get(hash) == 1:
-        return True
-
-    return False
-
-def process_input(input_list, password_hashes):
+def process_input(input_list, bloom_filter):
     input_num = int(input_list.readline())
 
     for x in range(input_num):
@@ -17,7 +11,7 @@ def process_input(input_list, password_hashes):
         md5_hash = hashes.create_md5_hash()
         blake2b_hash = hashes.create_blake3_hash()
 
-        if check_map(sha1_hash, password_hashes) and check_map(md5_hash, password_hashes) and check_map(blake2b_hash, password_hashes):
+        if bloom_filter.check_dict(sha1_hash) and bloom_filter.check_dict(md5_hash) and bloom_filter.check_dict(blake2b_hash):
             print('maybe')
             continue
 
@@ -31,7 +25,7 @@ def main():
     bloom_filter.create_dict()
 
     input = open('sample_input.txt', 'r')
-    process_input(input, bloom_filter.password_dict)
+    process_input(input, bloom_filter)
 
 
 if __name__ == '__main__':
