@@ -1,7 +1,8 @@
 # Author: Gabrielle Josephson
 # Project 2 - Bloom Filter
 # CS 370 - Introduction to Security, Oregon State University, Fall 2021
-# Sources: None
+# Sources: https://www.w3schools.com/python/python_file_write.asp , 
+# https://www.geeksforgeeks.org/get-current-timestamp-using-python/
 
 from hashing import *
 from dict_actions import *
