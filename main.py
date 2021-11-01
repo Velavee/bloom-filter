@@ -11,7 +11,7 @@ import time
 
 def process_input(input_list, output_file, bloom_filter):
     for password in input_list:
-        hashes = Word_Hashes(password)
+        hashes = Word_Hashes(bytes(password, 'utf-8'))
         sha1_hash = hashes.create_sha1_hash()
         md5_hash = hashes.create_md5_hash()
         blake2b_hash = hashes.create_blake3_hash()
@@ -31,9 +31,9 @@ def create_output_filename():
 
 
 def main():
-    print('Loading passwords into bloom filter...')
+    print('Loading passwords into bloom filter (this may take a moment)...')
     # Open password file and store hashes for each password in a dictionary
-    bad_password_file = open('dictionary.txt', 'r')
+    bad_password_file = open('dictionary.txt', 'rb')
     bloom_filter = Bloom_Filter_Dict(bad_password_file)
     bloom_filter.create_dict()
 
